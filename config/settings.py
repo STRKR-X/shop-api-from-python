@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "products",
+    "users",
 ]
 
 REST_FRAMEWORK = {"DEFAULT_FILTER_BACKENDS": ["rest_framework.filters.SearchFilter"]}
+
+AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
