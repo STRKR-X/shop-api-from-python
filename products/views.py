@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, filters
+from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import get_object_or_404
 
@@ -9,14 +10,29 @@ from .models import Product
 from .serializers import ProductSerializer
 
 
+# ===============================================================================================================
+# ProductListAPIView
+# ===============================================================================================================
 class ProductListAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
     filter_backends = [filters.SearchFilter]
     search_fields = ["name"]
 
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAuthenticated()]
 
+        return []
+
+
+# ===============================================================================================================
+# ProductDetailAPIView
+# ===============================================================================================================
 class ProductDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, id):
         product = get_object_or_404(Product, id=id)
         serializer = ProductSerializer(product)
