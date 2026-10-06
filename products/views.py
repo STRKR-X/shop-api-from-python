@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, filters
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from django.shortcuts import get_object_or_404
 
@@ -31,7 +31,7 @@ class ProductListAPIView(generics.ListCreateAPIView):
 # ProductDetailAPIView
 # ===============================================================================================================
 class ProductDetailAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def get(self, request, id):
         product = get_object_or_404(Product, id=id)
